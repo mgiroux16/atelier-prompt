@@ -1,1 +1,310 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atelier IA : Test de Prompts</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2em;
+        }
+
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .bad {
+            color: #e74c3c;
+        }
+
+        .good {
+            color: #27ae60;
+        }
+
+        .icon {
+            font-size: 1.8em;
+            margin-right: 10px;
+        }
+
+        .prompt-box {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button, .link-button {
+            flex: 1;
+            min-width: 140px;
+            padding: 15px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .copy-btn {
+            background: #667eea;
+            color: white;
+        }
+
+        .copy-btn:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+        }
+
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+
+        .copy-btn.copied {
+            background: #27ae60;
+        }
+
+        .chatgpt-btn {
+            background: #10a37f;
+            color: white;
+        }
+
+        .chatgpt-btn:hover {
+            background: #0d8c6b;
+            transform: translateY(-2px);
+        }
+
+        .claude-btn {
+            background: #c17f5a;
+            color: white;
+        }
+
+        .claude-btn:hover {
+            background: #a86d4a;
+            transform: translateY(-2px);
+        }
+
+        .instructions {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            margin-bottom: 25px;
+        }
+
+        .instructions h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 2;
+            font-size: 1.1em;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.5em;
+            }
+
+            .card {
+                padding: 20px;
+            }
+
+            .card-header {
+                font-size: 1.2em;
+            }
+
+            .prompt-box {
+                font-size: 1em;
+                padding: 15px;
+            }
+
+            button, .link-button {
+                min-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Atelier IA : Test de Prompts</h1>
+
+        <!-- INSTRUCTIONS -->
+        <div class="instructions">
+            <h2>📝 Mode d'emploi</h2>
+            <ol>
+                <li>Choisissez un <strong>mauvais</strong> ou un <strong>bon</strong> prompt parmi les exemples ci-dessous</li>
+                <li>Cliquez sur <strong>"📋 Copier ce prompt"</strong></li>
+                <li>Cliquez sur <strong>"🚀 Tester sur ChatGPT"</strong> ou <strong>"Claude"</strong></li>
+                <li>Collez le prompt (appui long puis "Coller" sur mobile)</li>
+                <li>Comparez les résultats ! 🎯</li>
+            </ol>
+        </div>
+
+        <h2 style="color: white; margin: 30px 0 20px 0; text-align: center;">📝 Exemple 1 : Lettre de motivation</h2>
+
+        <!-- MAUVAIS PROMPT -->
+        <div class="card">
+            <div class="card-header bad">
+                <span class="icon">❌</span>
+                MAUVAIS PROMPT
+            </div>
+            <div class="prompt-box" id="bad-prompt">
+                Peux-tu me faire une lettre de motivation ?
+            </div>
+            <div class="buttons">
+                <button class="copy-btn" onclick="copyPrompt('bad-prompt', this)">
+                    📋 Copier ce prompt
+                </button>
+                <a href="https://chat.openai.com" target="_blank" class="link-button chatgpt-btn">
+                    🚀 Tester sur ChatGPT
+                </a>
+                <a href="https://claude.ai" target="_blank" class="link-button claude-btn">
+                    🚀 Tester sur Claude
+                </a>
+            </div>
+        </div>
+
+        <!-- BON PROMPT -->
+        <div class="card">
+            <div class="card-header good">
+                <span class="icon">✅</span>
+                BON PROMPT
+            </div>
+            <div class="prompt-box" id="good-prompt">
+                Tu es conseiller RH, fais-moi une lettre de motivation pour le poste de jardinier, voici mon CV et voici l'offre de poste, adapte-la en fonction de mon profil et fais-moi le contenu sur une page, un ton naturel, pas trop formel, (que l'on ne distingue pas que c'est rédigé par une IA).
+            </div>
+            <div class="buttons">
+                <button class="copy-btn" onclick="copyPrompt('good-prompt', this)">
+                    📋 Copier ce prompt
+                </button>
+                <a href="https://chat.openai.com" target="_blank" class="link-button chatgpt-btn">
+                    🚀 Tester sur ChatGPT
+                </a>
+                <a href="https://claude.ai" target="_blank" class="link-button claude-btn">
+                    🚀 Tester sur Claude
+                </a>
+            </div>
+        </div>
+
+        <h2 style="color: white; margin: 30px 0 20px 0; text-align: center;">💼 Exemple 2 : Préparation d'entretien</h2>
+
+        <!-- MAUVAIS PROMPT 2 -->
+        <div class="card">
+            <div class="card-header bad">
+                <span class="icon">❌</span>
+                MAUVAIS PROMPT
+            </div>
+            <div class="prompt-box" id="bad-prompt-2">
+                Peux-tu me dire comment je prépare un entretien d'embauche ?
+            </div>
+            <div class="buttons">
+                <button class="copy-btn" onclick="copyPrompt('bad-prompt-2', this)">
+                    📋 Copier ce prompt
+                </button>
+                <a href="https://chat.openai.com" target="_blank" class="link-button chatgpt-btn">
+                    🚀 Tester sur ChatGPT
+                </a>
+                <a href="https://claude.ai" target="_blank" class="link-button claude-btn">
+                    🚀 Tester sur Claude
+                </a>
+            </div>
+        </div>
+
+        <!-- BON PROMPT 2 -->
+        <div class="card">
+            <div class="card-header good">
+                <span class="icon">✅</span>
+                BON PROMPT
+            </div>
+            <div class="prompt-box" id="good-prompt-2">
+                Agis comme un Recruteur exigeant pour le poste de agent administratif. Je suis débutant. Tu vas me faire passer l'entretien. Pose-moi la première question. Attends ma réponse avant de poser la suivante.
+            </div>
+            <div class="buttons">
+                <button class="copy-btn" onclick="copyPrompt('good-prompt-2', this)">
+                    📋 Copier ce prompt
+                </button>
+                <a href="https://chat.openai.com" target="_blank" class="link-button chatgpt-btn">
+                    🚀 Tester sur ChatGPT
+                </a>
+                <a href="https://claude.ai" target="_blank" class="link-button claude-btn">
+                    🚀 Tester sur Claude
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyPrompt(elementId, button) {
+            const promptText = document.getElementById(elementId).textContent.trim();
+            
+            // Copie dans le presse-papier
+            navigator.clipboard.writeText(promptText).then(() => {
+                // Change le texte du bouton
+                const originalText = button.textContent;
+                button.textContent = '✅ Copié !';
+                button.classList.add('copied');
+                
+                // Retour à la normale après 2 secondes
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                // Fallback pour les vieux navigateurs
+                alert('Prompt copié ! Vous pouvez maintenant le coller dans ChatGPT ou Claude.');
+            });
+        }
+    </script>
+</body>
+</html>
